@@ -1,0 +1,54 @@
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  line-height: 1.4;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.topnav {
+  border-bottom: 1px solid rgba(127,127,127,0.25);
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(8px);
+  background: rgba(20,20,20,0.65);
+}
+
+.topnav-inner {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.tab {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(127,127,127,0.25);
+}
+
+.card {
+  border: 1px solid rgba(127,127,127,0.25);
+  border-radius: 14px;
+  padding: 16px;
+}

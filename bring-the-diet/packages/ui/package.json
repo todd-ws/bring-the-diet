@@ -1,0 +1,19 @@
+{
+  "name": "@nutri/ui",
+  "private": true,
+  "version": "0.0.1",
+  "main": "src/index.tsx",
+  "types": "src/index.tsx",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "echo 'no lint configured'",
+    "build": "echo 'no build configured'"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "@types/react": "^19.0.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  }
+}
