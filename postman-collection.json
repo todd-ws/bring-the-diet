@@ -1,0 +1,483 @@
+{
+    "info": {
+        "name": "Bring The Diet API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3000"
+        },
+        {
+            "key": "devUser",
+            "value": "todd"
+        }
+    ],
+    "item": [
+        {
+            "name": "Health",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/api/health"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Foods",
+            "item": [
+                {
+                    "name": "List Foods",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/foods?page=1&limit=20"
+                    }
+                },
+                {
+                    "name": "Get Food",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/foods/{{foodId}}"
+                    }
+                },
+                {
+                    "name": "Create Food",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"description\": \"Test Food\", \"brandOwner\": \"Test\"}"
+                        },
+                        "url": "{{baseUrl}}/api/foods"
+                    }
+                },
+                {
+                    "name": "Update Food",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"description\": \"Updated\"}"
+                        },
+                        "url": "{{baseUrl}}/api/foods/{{foodId}}"
+                    }
+                },
+                {
+                    "name": "Delete Food",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/foods/{{foodId}}"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Recipes",
+            "item": [
+                {
+                    "name": "List Recipes",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/recipes"
+                    }
+                },
+                {
+                    "name": "Get Recipe",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/recipes/{{recipeId}}"
+                    }
+                },
+                {
+                    "name": "Create Recipe",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\": \"Test Recipe\", \"ingredients\": [\"flour\", \"sugar\"], \"instructions\": [\"Mix\", \"Bake\"]}"
+                        },
+                        "url": "{{baseUrl}}/api/recipes"
+                    }
+                },
+                {
+                    "name": "Update Recipe",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\": \"Updated Recipe\"}"
+                        },
+                        "url": "{{baseUrl}}/api/recipes/{{recipeId}}"
+                    }
+                },
+                {
+                    "name": "Publish Recipe",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/recipes/{{recipeId}}/publish"
+                    }
+                },
+                {
+                    "name": "Delete Recipe",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/recipes/{{recipeId}}"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Diets",
+            "item": [
+                {
+                    "name": "List Diets",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/diets"
+                    }
+                },
+                {
+                    "name": "Get Diet",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/diets/{{dietId}}"
+                    }
+                },
+                {
+                    "name": "Create Diet",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\": \"Keto Diet\", \"type\": \"keto\", \"restrictions\": [\"sugar\"]}"
+                        },
+                        "url": "{{baseUrl}}/api/diets"
+                    }
+                },
+                {
+                    "name": "Update Diet",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\": \"Updated Diet\"}"
+                        },
+                        "url": "{{baseUrl}}/api/diets/{{dietId}}"
+                    }
+                },
+                {
+                    "name": "Delete Diet",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/diets/{{dietId}}"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Blog Posts",
+            "item": [
+                {
+                    "name": "List Posts",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/blog-posts"
+                    }
+                },
+                {
+                    "name": "Get Post",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/blog-posts/{{postId}}"
+                    }
+                },
+                {
+                    "name": "Create Post",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\": \"Test Post\", \"content\": \"Blog content\", \"tags\": [\"health\"]}"
+                        },
+                        "url": "{{baseUrl}}/api/blog-posts"
+                    }
+                },
+                {
+                    "name": "Publish Post",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/blog-posts/{{postId}}/publish"
+                    }
+                },
+                {
+                    "name": "Delete Post",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/blog-posts/{{postId}}"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Meal Plans",
+            "item": [
+                {
+                    "name": "List Meal Plans",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/meal-plans"
+                    }
+                },
+                {
+                    "name": "Get Meal Plan",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/meal-plans/{{planId}}"
+                    }
+                },
+                {
+                    "name": "Create Meal Plan",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\": \"Weekly Plan\", \"dietType\": \"keto\", \"duration\": 7}"
+                        },
+                        "url": "{{baseUrl}}/api/meal-plans"
+                    }
+                },
+                {
+                    "name": "Delete Meal Plan",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/meal-plans/{{planId}}"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Nutrition Facts",
+            "item": [
+                {
+                    "name": "List Nutrition Facts",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/nutrition-facts"
+                    }
+                },
+                {
+                    "name": "Create Nutrition Fact",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "X-Dev-User",
+                                "value": "{{devUser}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"foodId\": \"123\", \"calories\": 200, \"protein\": 10}"
+                        },
+                        "url": "{{baseUrl}}/api/nutrition-facts"
+                    }
+                }
+            ]
+        }
+    ]
+}

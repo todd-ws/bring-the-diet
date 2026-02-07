@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Bring the Diet",
+    "slug": "bring-the-diet",
+    "scheme": "nutri",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "plugins": ["expo-router"],
+    "ios": { "supportsTablet": true },
+    "android": { "adaptiveIcon": { "backgroundColor": "#ffffff" } },
+    "web": { "bundler": "metro" }
+  }
+}
