@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050';
 
 interface Diet {
   _id: string;
@@ -16,16 +16,31 @@ interface Diet {
   category: 'lifestyle' | 'medical';
 }
 
+interface RecipeNutrition {
+  calories?: number;
+  protein?: number;
+  carbs?: number;
+  fat?: number;
+}
+
 interface Recipe {
-  _id: string;
   id: string;
   title: string;
-  image: string;
-  diet: string;
-  prepTime: number;
-  calories: number;
-  isFavorite: boolean;
-  featured: boolean;
+  slug?: string;
+  summary?: string;
+  dietTags?: string[];
+  cuisine?: string;
+  prepMinutes?: number;
+  cookMinutes?: number;
+  servings?: number;
+  difficulty?: string;
+  images?: string[];
+  status?: string;
+  nutrition?: RecipeNutrition;
+  publishedAt?: string;
+  verified: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function HomePage() {
@@ -110,22 +125,30 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const headers = { 'X-Dev-User': 'web-client' };
-
-        const [dietsRes, recipesRes] = await Promise.all([
-          fetch(`${API_URL}/api/diets`, { headers }),
-          fetch(`${API_URL}/api/recipes`, { headers }),
+        // Fetch diets and recipes independently so one failure doesn't block the other
+        const [dietsResult, recipesResult] = await Promise.allSettled([
+          fetch(`${API_URL}/api/diets`).then(async (res) => {
+            if (!res.ok) return [];
+            const data = await res.json();
+            return data.items || data.data || [];
+          }),
+          fetch(`${API_URL}/api/recipes`).then(async (res) => {
+            if (!res.ok) throw new Error('Failed to fetch recipes');
+            const data = await res.json();
+            return data.items || [];
+          }),
         ]);
 
-        if (!dietsRes.ok || !recipesRes.ok) {
-          throw new Error('Failed to fetch data');
+        if (dietsResult.status === 'fulfilled') {
+          setDiets(dietsResult.value);
         }
 
-        const dietsData = await dietsRes.json();
-        const recipesData = await recipesRes.json();
+        if (recipesResult.status === 'fulfilled') {
+          setRecipes(recipesResult.value);
+        } else {
+          throw new Error('Failed to fetch recipes');
+        }
 
-        setDiets(dietsData.data || []);
-        setRecipes((recipesData.data || []).filter((r: Recipe) => r.featured));
         setLoading(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load data');
@@ -148,7 +171,7 @@ export default function HomePage() {
     return (
       <div style={{ ...styles.container, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
         <p style={{ color: '#ef4444' }}>Error: {error}</p>
-        <p style={{ color: '#9ca3af', fontSize: 14 }}>Make sure the API is running on {API_URL}</p>
+        <p style={{ color: '#9ca3af', fontSize: 14 }}>Make sure the food-api is running on {API_URL}</p>
       </div>
     );
   }
@@ -377,33 +400,29 @@ export default function HomePage() {
         </div>
         <div className="recipe-grid">
           {recipes.map((recipe) => (
-            <Link key={recipe._id} href={`/recipes/${recipe._id}`} style={{ textDecoration: 'none' }}>
+            <Link key={recipe.id} href={`/recipes/${recipe.id}`} style={{ textDecoration: 'none' }}>
               <div style={styles.recipeCard}>
                 <div style={styles.recipeImageContainer}>
-                  <img
-                    src={recipe.image}
-                    alt={recipe.title}
-                    style={styles.recipeImage}
-                  />
-                  <button
-                    type="button"
-                    aria-label={recipe.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-                    style={{
-                      ...styles.favoriteButton,
-                      backgroundColor: recipe.isFavorite ? '#dc2626' : 'rgba(0,0,0,0.5)',
-                    }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill={recipe.isFavorite ? 'white' : 'none'} stroke="white" strokeWidth="2">
-                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                    </svg>
-                  </button>
-                  <span style={styles.dietTag}>{recipe.diet}</span>
+                  {recipe.images?.[0] && (
+                    <img
+                      src={recipe.images[0]}
+                      alt={recipe.title}
+                      style={styles.recipeImage}
+                    />
+                  )}
+                  {recipe.dietTags?.[0] && (
+                    <span style={styles.dietTag}>{recipe.dietTags[0]}</span>
+                  )}
                 </div>
                 <div style={styles.recipeInfo}>
                   <h4 style={styles.recipeTitle}>{recipe.title}</h4>
                   <div style={styles.recipeMeta}>
-                    <span style={styles.recipeMetaItem}>🕐 {recipe.prepTime} min</span>
-                    <span style={styles.recipeMetaItem}>🔥 {recipe.calories} cal</span>
+                    {recipe.prepMinutes != null && (
+                      <span style={styles.recipeMetaItem}>🕐 {recipe.prepMinutes} min</span>
+                    )}
+                    {recipe.nutrition?.calories != null && (
+                      <span style={styles.recipeMetaItem}>🔥 {recipe.nutrition.calories} cal</span>
+                    )}
                   </div>
                 </div>
               </div>
