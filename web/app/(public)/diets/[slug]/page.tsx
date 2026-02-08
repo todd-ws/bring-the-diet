@@ -1,37 +1,44 @@
 import Link from 'next/link';
 
-export default function RecipesPage() {
+export default function DietDetailPage({ params }: { params: { slug: string } }) {
+  const dietName = params.slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
   return (
     <div style={styles.container}>
       <div style={styles.card}>
         <div style={styles.iconCircle}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="1.5">
-            <path d="M15 11h.01M11 15h.01M16 16c1.5-1.5 1.5-4 0-5.5" />
-            <path d="M19 5L5 19" />
-            <circle cx="12" cy="12" r="10" />
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="1.5">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+            <path d="M8 12l2 2 4-4" />
           </svg>
         </div>
         <span style={styles.badge}>Coming Soon</span>
-        <h1 style={styles.title}>Recipes</h1>
+        <h1 style={styles.title}>{dietName} Diet</h1>
         <p style={styles.description}>
-          Browse and discover recipes across all diet types. Filter by cuisine, prep time,
-          calories, and dietary needs. Save your favorites and get personalized suggestions.
+          The full {dietName} diet page is under development. Soon you&apos;ll find a comprehensive guide
+          with allowed foods, recipes, meal plans, and scientific research for this diet type.
         </p>
         <div style={styles.featureList}>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Search & filter by diet, time, and calories
+            Complete food list and guidelines
           </div>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Step-by-step cooking instructions
+            Filtered recipes for this diet
           </div>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Nutrition breakdown per serving
+            Sample meal plans and tips
           </div>
         </div>
-        <Link href="/" style={styles.backLink}>Back to Home</Link>
+        <div style={styles.linkRow}>
+          <Link href="/diets" style={styles.backLink}>All Diets</Link>
+          <Link href="/" style={styles.backLink}>Home</Link>
+        </div>
       </div>
     </div>
   );
@@ -60,7 +67,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: 96,
     height: 96,
     borderRadius: '50%',
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    backgroundColor: 'rgba(139, 92, 246, 0.1)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -69,8 +76,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   badge: {
     display: 'inline-block',
     padding: '6px 16px',
-    backgroundColor: 'rgba(16, 185, 129, 0.15)',
-    color: '#10b981',
+    backgroundColor: 'rgba(139, 92, 246, 0.15)',
+    color: '#8b5cf6',
     borderRadius: 20,
     fontSize: 13,
     fontWeight: 600,
@@ -106,8 +113,13 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: 8,
     height: 8,
     borderRadius: '50%',
-    backgroundColor: '#10b981',
+    backgroundColor: '#8b5cf6',
     flexShrink: 0,
+  },
+  linkRow: {
+    display: 'flex',
+    gap: 12,
+    justifyContent: 'center',
   },
   backLink: {
     display: 'inline-block',

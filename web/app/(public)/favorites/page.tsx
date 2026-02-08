@@ -1,34 +1,32 @@
 import Link from 'next/link';
 
-export default function RecipesPage() {
+export default function FavoritesPage() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
         <div style={styles.iconCircle}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="1.5">
-            <path d="M15 11h.01M11 15h.01M16 16c1.5-1.5 1.5-4 0-5.5" />
-            <path d="M19 5L5 19" />
-            <circle cx="12" cy="12" r="10" />
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="1.5">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
           </svg>
         </div>
         <span style={styles.badge}>Coming Soon</span>
-        <h1 style={styles.title}>Recipes</h1>
+        <h1 style={styles.title}>Saved Recipes</h1>
         <p style={styles.description}>
-          Browse and discover recipes across all diet types. Filter by cuisine, prep time,
-          calories, and dietary needs. Save your favorites and get personalized suggestions.
+          Your personal collection of favorite recipes, all in one place.
+          Quickly access the meals you love and organize them into custom collections.
         </p>
         <div style={styles.featureList}>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Search & filter by diet, time, and calories
+            Save recipes with one tap
           </div>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Step-by-step cooking instructions
+            Organize into custom collections
           </div>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Nutrition breakdown per serving
+            Quick access from any device
           </div>
         </div>
         <Link href="/" style={styles.backLink}>Back to Home</Link>
@@ -60,7 +58,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: 96,
     height: 96,
     borderRadius: '50%',
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -69,8 +67,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   badge: {
     display: 'inline-block',
     padding: '6px 16px',
-    backgroundColor: 'rgba(16, 185, 129, 0.15)',
-    color: '#10b981',
+    backgroundColor: 'rgba(59, 130, 246, 0.15)',
+    color: '#3b82f6',
     borderRadius: 20,
     fontSize: 13,
     fontWeight: 600,
@@ -106,7 +104,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: 8,
     height: 8,
     borderRadius: '50%',
-    backgroundColor: '#10b981',
+    backgroundColor: '#3b82f6',
     flexShrink: 0,
   },
   backLink: {

@@ -1,34 +1,32 @@
 import Link from 'next/link';
 
-export default function RecipesPage() {
+export default function ProgressPage() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
         <div style={styles.iconCircle}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="1.5">
-            <path d="M15 11h.01M11 15h.01M16 16c1.5-1.5 1.5-4 0-5.5" />
-            <path d="M19 5L5 19" />
-            <circle cx="12" cy="12" r="10" />
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="1.5">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
           </svg>
         </div>
         <span style={styles.badge}>Coming Soon</span>
-        <h1 style={styles.title}>Recipes</h1>
+        <h1 style={styles.title}>My Progress</h1>
         <p style={styles.description}>
-          Browse and discover recipes across all diet types. Filter by cuisine, prep time,
-          calories, and dietary needs. Save your favorites and get personalized suggestions.
+          Track your nutrition and diet journey over time. Set goals, log meals,
+          and see visual charts of your progress toward a healthier lifestyle.
         </p>
         <div style={styles.featureList}>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Search & filter by diet, time, and calories
+            Daily calorie and macro tracking
           </div>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Step-by-step cooking instructions
+            Visual progress charts and streaks
           </div>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Nutrition breakdown per serving
+            Weekly and monthly summary reports
           </div>
         </div>
         <Link href="/" style={styles.backLink}>Back to Home</Link>
@@ -60,7 +58,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: 96,
     height: 96,
     borderRadius: '50%',
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    backgroundColor: 'rgba(168, 85, 247, 0.1)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -69,8 +67,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   badge: {
     display: 'inline-block',
     padding: '6px 16px',
-    backgroundColor: 'rgba(16, 185, 129, 0.15)',
-    color: '#10b981',
+    backgroundColor: 'rgba(168, 85, 247, 0.15)',
+    color: '#a855f7',
     borderRadius: 20,
     fontSize: 13,
     fontWeight: 600,
@@ -106,7 +104,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: 8,
     height: 8,
     borderRadius: '50%',
-    backgroundColor: '#10b981',
+    backgroundColor: '#a855f7',
     flexShrink: 0,
   },
   backLink: {

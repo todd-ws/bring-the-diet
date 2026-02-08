@@ -1,34 +1,33 @@
 import Link from 'next/link';
 
-export default function RecipesPage() {
+export default function FoodsPage() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
         <div style={styles.iconCircle}>
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="1.5">
-            <path d="M15 11h.01M11 15h.01M16 16c1.5-1.5 1.5-4 0-5.5" />
-            <path d="M19 5L5 19" />
-            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z" />
+            <path d="M12 6v6l4 2" />
           </svg>
         </div>
         <span style={styles.badge}>Coming Soon</span>
-        <h1 style={styles.title}>Recipes</h1>
+        <h1 style={styles.title}>Food Database</h1>
         <p style={styles.description}>
-          Browse and discover recipes across all diet types. Filter by cuisine, prep time,
-          calories, and dietary needs. Save your favorites and get personalized suggestions.
+          Search our comprehensive database of over 450,000 foods with detailed nutrition information.
+          Look up calories, macros, vitamins, and minerals for any food item.
         </p>
         <div style={styles.featureList}>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Search & filter by diet, time, and calories
+            450K+ foods with full nutrient profiles
           </div>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Step-by-step cooking instructions
+            Search by name, category, or nutrient
           </div>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Nutrition breakdown per serving
+            Compare foods side by side
           </div>
         </div>
         <Link href="/" style={styles.backLink}>Back to Home</Link>

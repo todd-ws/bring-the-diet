@@ -16,29 +16,26 @@ interface Diet {
   category: 'lifestyle' | 'medical';
 }
 
-interface RecipeNutrition {
-  calories?: number;
-  protein?: number;
-  carbs?: number;
-  fat?: number;
+interface RecipeIngredient {
+  name: string;
+  quantity?: number;
+  unit?: string;
+  notes?: string;
 }
 
 interface Recipe {
   id: string;
   title: string;
-  slug?: string;
-  summary?: string;
-  dietTags?: string[];
-  cuisine?: string;
-  prepMinutes?: number;
-  cookMinutes?: number;
-  servings?: number;
-  difficulty?: string;
-  images?: string[];
-  status?: string;
-  nutrition?: RecipeNutrition;
-  publishedAt?: string;
-  verified: boolean;
+  image?: string;
+  diet?: string;
+  dietSlug?: string;
+  prepTime?: number;
+  calories?: number;
+  isFavorite: boolean;
+  featured: boolean;
+  description?: string;
+  ingredients?: RecipeIngredient[];
+  instructions?: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -126,18 +123,23 @@ export default function HomePage() {
     async function fetchData() {
       try {
         // Fetch diets and recipes independently so one failure doesn't block the other
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
+
         const [dietsResult, recipesResult] = await Promise.allSettled([
-          fetch(`${API_URL}/api/diets`).then(async (res) => {
+          fetch(`${API_URL}/api/diets`, { signal: controller.signal }).then(async (res) => {
             if (!res.ok) return [];
             const data = await res.json();
-            return data.items || data.data || [];
+            return Array.isArray(data) ? data : data.items || [];
           }),
-          fetch(`${API_URL}/api/recipes`).then(async (res) => {
+          fetch(`${API_URL}/api/recipes`, { signal: controller.signal }).then(async (res) => {
             if (!res.ok) throw new Error('Failed to fetch recipes');
             const data = await res.json();
             return data.items || [];
           }),
         ]);
+
+        clearTimeout(timeout);
 
         if (dietsResult.status === 'fulfilled') {
           setDiets(dietsResult.value);
@@ -403,25 +405,25 @@ export default function HomePage() {
             <Link key={recipe.id} href={`/recipes/${recipe.id}`} style={{ textDecoration: 'none' }}>
               <div style={styles.recipeCard}>
                 <div style={styles.recipeImageContainer}>
-                  {recipe.images?.[0] && (
+                  {recipe.image && (
                     <img
-                      src={recipe.images[0]}
+                      src={recipe.image}
                       alt={recipe.title}
                       style={styles.recipeImage}
                     />
                   )}
-                  {recipe.dietTags?.[0] && (
-                    <span style={styles.dietTag}>{recipe.dietTags[0]}</span>
+                  {recipe.diet && (
+                    <span style={styles.dietTag}>{recipe.diet}</span>
                   )}
                 </div>
                 <div style={styles.recipeInfo}>
                   <h4 style={styles.recipeTitle}>{recipe.title}</h4>
                   <div style={styles.recipeMeta}>
-                    {recipe.prepMinutes != null && (
-                      <span style={styles.recipeMetaItem}>🕐 {recipe.prepMinutes} min</span>
+                    {recipe.prepTime != null && (
+                      <span style={styles.recipeMetaItem}>🕐 {recipe.prepTime} min</span>
                     )}
-                    {recipe.nutrition?.calories != null && (
-                      <span style={styles.recipeMetaItem}>🔥 {recipe.nutrition.calories} cal</span>
+                    {recipe.calories != null && (
+                      <span style={styles.recipeMetaItem}>🔥 {recipe.calories} cal</span>
                     )}
                   </div>
                 </div>

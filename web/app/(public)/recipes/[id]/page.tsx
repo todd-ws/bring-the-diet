@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function RecipesPage() {
+export default function RecipeDetailPage() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
@@ -12,15 +12,15 @@ export default function RecipesPage() {
           </svg>
         </div>
         <span style={styles.badge}>Coming Soon</span>
-        <h1 style={styles.title}>Recipes</h1>
+        <h1 style={styles.title}>Recipe Details</h1>
         <p style={styles.description}>
-          Browse and discover recipes across all diet types. Filter by cuisine, prep time,
-          calories, and dietary needs. Save your favorites and get personalized suggestions.
+          The full recipe detail page is under development. Soon you&apos;ll see the complete recipe
+          with step-by-step instructions, ingredient list, nutrition info, and user reviews.
         </p>
         <div style={styles.featureList}>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Search & filter by diet, time, and calories
+            Full ingredient list with quantities
           </div>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
@@ -28,10 +28,13 @@ export default function RecipesPage() {
           </div>
           <div style={styles.featureItem}>
             <span style={styles.featureDot} />
-            Nutrition breakdown per serving
+            Nutrition facts and serving info
           </div>
         </div>
-        <Link href="/" style={styles.backLink}>Back to Home</Link>
+        <div style={styles.linkRow}>
+          <Link href="/recipes" style={styles.backLink}>All Recipes</Link>
+          <Link href="/" style={styles.backLink}>Home</Link>
+        </div>
       </div>
     </div>
   );
@@ -108,6 +111,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '50%',
     backgroundColor: '#10b981',
     flexShrink: 0,
+  },
+  linkRow: {
+    display: 'flex',
+    gap: 12,
+    justifyContent: 'center',
   },
   backLink: {
     display: 'inline-block',
