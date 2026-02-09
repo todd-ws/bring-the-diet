@@ -1,7 +1,8 @@
 import Link from 'next/link';
 
-export default function DietDetailPage({ params }: { params: { slug: string } }) {
-  const dietName = params.slug
+export default async function DietDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const dietName = slug
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');

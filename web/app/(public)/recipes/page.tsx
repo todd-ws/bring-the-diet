@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useAuth } from '../../../lib/useAuth';
+import { fetchWithAuth } from '../../../lib/fetchWithAuth';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050';
 
@@ -43,6 +45,7 @@ export default function RecipesPage() {
   const [selectedDiet, setSelectedDiet] = useState('All');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isAuthenticated, getAccessToken } = useAuth();
 
   useEffect(() => {
     async function fetchData() {
@@ -57,7 +60,10 @@ export default function RecipesPage() {
             return Array.isArray(data) ? data : data.items || [];
           }),
           fetch(`${API_URL}/api/recipes`, { signal: controller.signal }).then(async (res) => {
-            if (!res.ok) throw new Error('Failed to fetch recipes');
+            if (!res.ok) {
+              const body = await res.json().catch(() => null);
+              throw new Error(body?.message || `Failed to fetch recipes (${res.status})`);
+            }
             const data = await res.json();
             return data.items || [];
           }),
@@ -86,14 +92,18 @@ export default function RecipesPage() {
   }, []);
 
   const handleDelete = async (id: string, title: string) => {
+    if (!isAuthenticated) {
+      alert('Please sign in to delete recipes.');
+      return;
+    }
     if (!confirm(`Delete "${title}"?`)) return;
     try {
-      const res = await fetch(`${API_URL}/api/recipes/${id}`, { method: 'DELETE' });
+      const res = await fetchWithAuth(`/api/recipes/${id}`, getAccessToken, { method: 'DELETE' });
       if (res.ok) {
         setRecipes(prev => prev.filter(r => r.id !== id));
       }
     } catch {
-      alert('Failed to delete recipe');
+      alert('Failed to delete recipe. Are you signed in?');
     }
   };
 

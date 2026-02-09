@@ -60,6 +60,12 @@ importers:
 
   web:
     dependencies:
+      '@azure/msal-browser':
+        specifier: ^5.1.0
+        version: 5.1.0
+      '@azure/msal-react':
+        specifier: ^5.0.3
+        version: 5.0.3(@azure/msal-browser@5.1.0)(react@19.2.4)
       '@nutri/shared':
         specifier: workspace:*
         version: link:../packages/shared
@@ -104,6 +110,21 @@ packages:
     peerDependenciesMeta:
       graphql:
         optional: true
+
+  '@azure/msal-browser@5.1.0':
+    resolution: {integrity: sha512-5tZcp1zcALSLJvnxkmJ8MYxLtZzEyq28wX2jSV4Kz2QaHty4eYIb/Pc44DARLfgHD+G9F82k9nD7J89MbFRQxA==}
+    engines: {node: '>=0.8.0'}
+
+  '@azure/msal-common@16.0.3':
+    resolution: {integrity: sha512-3aedNnM0CHVuVZ+BqembdZWgovqe96BJ4YxGoIK0+qhoBZQsAhfwXdhjen72K94pkSQHtzlJ7fAq6w7knFZsng==}
+    engines: {node: '>=0.8.0'}
+
+  '@azure/msal-react@5.0.3':
+    resolution: {integrity: sha512-zz8USqfunXrZKFFG1tcfSlr+84NFMbePASj8NHB9oL0MIXdoWzADRUXkx+gKdB9dP/yDtfpGPOUgUAYGmpjTuw==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@azure/msal-browser': ^5.1.0
+      react: ^19.2.1
 
   '@babel/code-frame@7.10.4':
     resolution: {integrity: sha512-vG6SvB6oYEhvgisZNFRmRCUkLz11c7rp+tbNTynGqc6mS1d5ATd/sGyV6W0KZZnXRKMTzZDRgQT3Ou9jhpAfUg==}
@@ -5087,6 +5108,17 @@ packages:
 snapshots:
 
   '@0no-co/graphql.web@1.2.0': {}
+
+  '@azure/msal-browser@5.1.0':
+    dependencies:
+      '@azure/msal-common': 16.0.3
+
+  '@azure/msal-common@16.0.3': {}
+
+  '@azure/msal-react@5.0.3(@azure/msal-browser@5.1.0)(react@19.2.4)':
+    dependencies:
+      '@azure/msal-browser': 5.1.0
+      react: 19.2.4
 
   '@babel/code-frame@7.10.4':
     dependencies:
