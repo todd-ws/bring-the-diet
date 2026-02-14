@@ -321,7 +321,7 @@ export default function HomePage() {
           )}
           <div className="diet-slider" ref={dietSliderRef}>
             {lifestyleDiets.map((diet) => (
-              <Link key={diet._id} href={`/diets/${diet.slug}`} style={{ textDecoration: 'none', flex: '1 0 140px', minWidth: 140 }}>
+              <Link key={diet.id} href={`/diets/${diet.slug}`} style={{ textDecoration: 'none', flex: '1 0 140px', minWidth: 140 }}>
                 <div style={styles.dietCard}>
                   <div style={{ ...styles.dietIcon, backgroundColor: diet.color }}>
                     <span style={{ fontSize: 18 }}>{diet.icon}</span>
@@ -368,7 +368,7 @@ export default function HomePage() {
           )}
           <div className="diet-slider" ref={medicalSliderRef}>
             {medicalDiets.map((diet) => (
-              <Link key={diet._id} href={`/diets/${diet.slug}`} style={{ textDecoration: 'none', flex: '1 0 140px', minWidth: 140 }}>
+              <Link key={diet.id} href={`/diets/${diet.slug}`} style={{ textDecoration: 'none', flex: '1 0 140px', minWidth: 140 }}>
                 <div style={styles.dietCard}>
                   <div style={{ ...styles.dietIcon, backgroundColor: diet.color }}>
                     <span style={{ fontSize: 18 }}>{diet.icon}</span>

@@ -214,80 +214,86 @@ export default function RecipesPage() {
       {/* Recipe List */}
       <div style={styles.recipeList}>
         {filteredRecipes.map((recipe) => (
-          <div key={recipe.id} style={styles.recipeCard}>
-            {/* Recipe Image */}
-            <div style={styles.recipeImageContainer}>
-              {recipe.image ? (
-                <img
-                  src={recipe.image}
-                  alt={recipe.title}
-                  style={styles.recipeImage}
-                />
-              ) : (
-                <div style={styles.recipeImagePlaceholder}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4b5563" strokeWidth="1.5">
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <path d="M21 15l-5-5L5 21" />
-                  </svg>
-                </div>
-              )}
-            </div>
-
-            {/* Recipe Info */}
-            <div style={styles.recipeInfo}>
-              <h3 style={styles.recipeTitle}>{recipe.title}</h3>
-
-              {/* Diet Tags */}
-              {recipe.diet && (
-                <div style={styles.tagRow}>
-                  <span style={styles.tag}>{recipe.diet}</span>
-                </div>
-              )}
-
-              {/* Meta: prep time + calories */}
-              <div style={styles.metaRow}>
-                {recipe.prepTime != null && (
-                  <span style={styles.metaItem}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M12 6v6l4 2" />
+          <Link key={recipe.id} href={`/recipes/${recipe.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <div style={styles.recipeCard}>
+              {/* Recipe Image */}
+              <div style={styles.recipeImageContainer}>
+                {recipe.image ? (
+                  <img
+                    src={recipe.image}
+                    alt={recipe.title}
+                    style={styles.recipeImage}
+                  />
+                ) : (
+                  <div style={styles.recipeImagePlaceholder}>
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4b5563" strokeWidth="1.5">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <path d="M21 15l-5-5L5 21" />
                     </svg>
-                    {recipe.prepTime} min
-                  </span>
-                )}
-                {recipe.calories != null && (
-                  <span style={styles.metaItem}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
-                      <path d="M12 12c-2-2.67-4-4-4-6a4 4 0 0 1 8 0c0 2-2 3.33-4 6zm0 0c2 2.67 4 4 4 6a4 4 0 0 1-8 0c0-2 2-3.33 4-6z" />
-                    </svg>
-                    {recipe.calories} cal
-                  </span>
+                  </div>
                 )}
               </div>
 
-              {/* Action Buttons */}
-              <div style={styles.actionRow}>
-                <Link href={`/recipes/${recipe.id}`} style={styles.editButton}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                  </svg>
-                  Edit
-                </Link>
-                <button
-                  type="button"
-                  style={styles.deleteButton}
-                  onClick={() => handleDelete(recipe.id, recipe.title)}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                  </svg>
-                  Delete
-                </button>
+              {/* Recipe Info */}
+              <div style={styles.recipeInfo}>
+                <h3 style={styles.recipeTitle}>{recipe.title}</h3>
+
+                {/* Diet Tags */}
+                {recipe.diet && (
+                  <div style={styles.tagRow}>
+                    <span style={styles.tag}>{recipe.diet}</span>
+                  </div>
+                )}
+
+                {/* Meta: prep time + calories */}
+                <div style={styles.metaRow}>
+                  {recipe.prepTime != null && (
+                    <span style={styles.metaItem}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 6v6l4 2" />
+                      </svg>
+                      {recipe.prepTime} min
+                    </span>
+                  )}
+                  {recipe.calories != null && (
+                    <span style={styles.metaItem}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
+                        <path d="M12 12c-2-2.67-4-4-4-6a4 4 0 0 1 8 0c0 2-2 3.33-4 6zm0 0c2 2.67 4 4 4 6a4 4 0 0 1-8 0c0-2 2-3.33 4-6z" />
+                      </svg>
+                      {recipe.calories} cal
+                    </span>
+                  )}
+                </div>
+
+                {/* Action Buttons */}
+                <div style={styles.actionRow}>
+                  <button
+                    type="button"
+                    style={styles.editButton}
+                    onClick={(e) => { e.preventDefault(); }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    </svg>
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    style={styles.deleteButton}
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDelete(recipe.id, recipe.title); }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    </svg>
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
