@@ -37,19 +37,31 @@ export default function BlogPostPage() {
         if (!res.ok) throw new Error('Not found');
         setPost(await res.json());
       } catch {
-        // Fallback placeholder
         const displayTitle = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         setPost({
           id: slug,
           title: displayTitle,
           slug,
+          excerpt: `Discover the secrets to ${displayTitle.toLowerCase()} and achieving your wellness goals.`,
           category: 'Nutrition',
           author: 'BringTheDiet Team',
           readTime: 5,
           published: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          content: `This article is coming soon. Check back later for the full content of "${displayTitle}".`,
+          content: [
+            '## Introduction',
+            '',
+            `Healthy eating is the foundation of a vibrant, energetic life. In this comprehensive guide, we'll explore the key principles of ${displayTitle.toLowerCase()} and how you can apply them to your daily routine.`,
+            '',
+            '## Getting Started',
+            '',
+            'The journey to better nutrition begins with understanding what your body needs. Focus on whole, unprocessed foods and aim for a colorful plate at every meal.',
+            '',
+            '## Key Takeaways',
+            '',
+            'Remember that small, consistent changes are more sustainable than drastic overhauls. Start with one meal at a time and build from there.',
+          ].join('\n'),
         });
       } finally {
         setLoading(false);
@@ -61,12 +73,17 @@ export default function BlogPostPage() {
   if (loading) {
     return (
       <div style={styles.page}>
-        <div style={styles.stickyHeader}>
+        <div style={styles.topBar}>
           <Link href="/blog" style={styles.backArrow}>←</Link>
-          <div style={styles.skeletonTitle} />
+          <div style={styles.topBarRight}>
+            <div style={styles.skeletonIcon} />
+            <div style={styles.skeletonIcon} />
+          </div>
         </div>
+        <div style={styles.skeletonImage} />
         <div style={styles.content}>
-          <div style={styles.skeletonImage} />
+          <div style={styles.skeletonBadge} />
+          <div style={styles.skeletonTitleLg} />
           <div style={styles.skeletonBlock} />
           <div style={styles.skeletonBlock} />
         </div>
@@ -78,19 +95,55 @@ export default function BlogPostPage() {
     return (
       <div style={styles.page}>
         <div style={styles.content}>
-          <p style={{ color: '#9ca3af' }}>Article not found.</p>
-          <Link href="/blog" style={styles.linkGreen}>Back to Blog</Link>
+          <p style={{ color: '#9ca3af', textAlign: 'center', marginTop: 60 }}>Article not found.</p>
+          <div style={{ textAlign: 'center', marginTop: 16 }}>
+            <Link href="/blog" style={styles.linkGreen}>Back to Blog</Link>
+          </div>
         </div>
       </div>
     );
   }
 
+  const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  });
+
+  // Parse content: lines starting with ## become section headings
+  const renderContent = (text: string) => {
+    return text.split('\n').map((line, i) => {
+      const trimmed = line.trim();
+      if (!trimmed) return null;
+      if (trimmed.startsWith('## ')) {
+        return <h2 key={i} style={styles.sectionHeading}>{trimmed.slice(3)}</h2>;
+      }
+      if (trimmed.startsWith('### ')) {
+        return <h3 key={i} style={styles.subHeading}>{trimmed.slice(4)}</h3>;
+      }
+      return <p key={i} style={styles.paragraph}>{trimmed}</p>;
+    });
+  };
+
   return (
     <div style={styles.page}>
-      {/* Sticky header */}
-      <div style={styles.stickyHeader}>
+      {/* Top bar */}
+      <div style={styles.topBar}>
         <Link href="/blog" style={styles.backArrow}>←</Link>
-        <h1 style={styles.headerTitle}>Article</h1>
+        <div style={styles.topBarRight}>
+          <button type="button" style={styles.iconBtn} aria-label="Bookmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+          </button>
+          <button type="button" style={styles.iconBtn} aria-label="Share">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Hero image */}
@@ -100,7 +153,7 @@ export default function BlogPostPage() {
         </div>
       ) : (
         <div style={styles.heroPlaceholder}>
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#4b5563" strokeWidth="1">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#374151" strokeWidth="1">
             <rect x="3" y="3" width="18" height="18" rx="2" />
             <circle cx="8.5" cy="8.5" r="1.5" />
             <path d="M21 15l-5-5L5 21" />
@@ -109,50 +162,61 @@ export default function BlogPostPage() {
       )}
 
       <div style={styles.content}>
-        {/* Meta */}
-        <div style={styles.metaRow}>
-          <span style={styles.categoryBadge}>{post.category}</span>
-          <span style={styles.readTime}>{post.readTime} min read</span>
-        </div>
+        {/* Category */}
+        <span style={styles.categoryBadge}>{post.category}</span>
 
         {/* Title */}
         <h1 style={styles.articleTitle}>{post.title}</h1>
 
-        {/* Author & Date */}
+        {/* Excerpt / subtitle */}
+        {post.excerpt && (
+          <p style={styles.excerpt}>{post.excerpt}</p>
+        )}
+
+        {/* Author row */}
         <div style={styles.authorRow}>
           <div style={styles.authorAvatar}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>
           </div>
           <div>
             <p style={styles.authorName}>{post.author}</p>
-            <p style={styles.authorDate}>
-              Published {new Date(post.createdAt).toLocaleDateString('en-US', {
-                year: 'numeric', month: 'long', day: 'numeric'
-              })}
-            </p>
+            <div style={styles.authorMeta}>
+              <span style={styles.authorMetaItem}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                {formattedDate}
+              </span>
+              <span style={styles.authorMetaItem}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+                {post.readTime} min read
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Divider */}
         <div style={styles.divider} />
 
-        {/* Article content */}
+        {/* Article body */}
         <div style={styles.articleBody}>
           {post.content ? (
-            post.content.split('\n').map((para, i) => (
-              para.trim() ? <p key={i} style={styles.paragraph}>{para}</p> : null
-            ))
-          ) : post.excerpt ? (
-            <p style={styles.paragraph}>{post.excerpt}</p>
+            renderContent(post.content)
           ) : (
             <p style={styles.paragraph}>Full article content coming soon.</p>
           )}
         </div>
 
-        {/* Share / Back */}
+        {/* Footer */}
         <div style={styles.divider} />
         <div style={styles.footer}>
           <Link href="/blog" style={styles.backLink}>
@@ -169,33 +233,36 @@ const styles: { [key: string]: React.CSSProperties } = {
     minHeight: '100vh',
     backgroundColor: '#111827',
   },
-  stickyHeader: {
-    position: 'sticky',
-    top: 0,
-    zIndex: 10,
+  topBar: {
     display: 'flex',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 12,
-    padding: '14px 16px',
-    backgroundColor: '#1f2937',
-    borderBottom: '1px solid #374151',
+    padding: '12px 16px',
+    backgroundColor: '#111827',
   },
   backArrow: {
     color: 'white',
     textDecoration: 'none',
-    fontSize: 20,
+    fontSize: 22,
     lineHeight: 1,
     padding: '4px 8px',
   },
-  headerTitle: {
-    margin: 0,
-    fontSize: 18,
-    fontWeight: 700,
-    color: 'white',
+  topBarRight: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 16,
+  },
+  iconBtn: {
+    background: 'none',
+    border: 'none',
+    padding: 4,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
   },
   heroImageWrap: {
     width: '100%',
-    height: 240,
+    height: 300,
     overflow: 'hidden',
   },
   heroImage: {
@@ -205,51 +272,46 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   heroPlaceholder: {
     width: '100%',
-    height: 200,
+    height: 260,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1f2937',
-    borderBottom: '1px solid #374151',
+    backgroundColor: '#1a2332',
   },
   content: {
-    padding: '20px 16px 100px',
-  },
-  metaRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 14,
+    padding: '24px 16px 100px',
   },
   categoryBadge: {
     display: 'inline-block',
-    padding: '4px 12px',
+    padding: '5px 14px',
     backgroundColor: '#374151',
     color: '#d1d5db',
-    borderRadius: 8,
-    fontSize: 12,
-    fontWeight: 500,
-  },
-  readTime: {
+    borderRadius: 20,
     fontSize: 13,
-    color: '#6b7280',
+    fontWeight: 500,
+    marginBottom: 16,
   },
   articleTitle: {
-    margin: '0 0 16px',
-    fontSize: 26,
+    margin: '0 0 12px',
+    fontSize: 28,
     fontWeight: 700,
     color: 'white',
-    lineHeight: 1.3,
+    lineHeight: 1.25,
+  },
+  excerpt: {
+    margin: '0 0 24px',
+    fontSize: 16,
+    lineHeight: 1.6,
+    color: '#9ca3af',
   },
   authorRow: {
     display: 'flex',
     alignItems: 'center',
-    gap: 12,
-    marginBottom: 20,
+    gap: 14,
   },
   authorAvatar: {
-    width: 40,
-    height: 40,
+    width: 48,
+    height: 48,
     borderRadius: '50%',
     backgroundColor: '#374151',
     display: 'flex',
@@ -259,24 +321,46 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   authorName: {
     margin: 0,
-    fontSize: 15,
-    fontWeight: 600,
+    fontSize: 16,
+    fontWeight: 700,
     color: 'white',
   },
-  authorDate: {
-    margin: '2px 0 0',
+  authorMeta: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 16,
+    marginTop: 3,
+  },
+  authorMetaItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 5,
     fontSize: 13,
     color: '#6b7280',
   },
   divider: {
     height: 1,
     backgroundColor: '#374151',
-    margin: '24px 0',
+    margin: '28px 0',
   },
   articleBody: {
     display: 'flex',
     flexDirection: 'column',
     gap: 16,
+  },
+  sectionHeading: {
+    margin: '8px 0 0',
+    fontSize: 22,
+    fontWeight: 700,
+    color: '#6ee7b7',
+    lineHeight: 1.3,
+  },
+  subHeading: {
+    margin: '4px 0 0',
+    fontSize: 18,
+    fontWeight: 600,
+    color: '#6ee7b7',
+    lineHeight: 1.3,
   },
   paragraph: {
     margin: 0,
@@ -303,18 +387,30 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: '#6ee7b7',
     textDecoration: 'none',
   },
-  skeletonTitle: {
-    width: 120,
-    height: 20,
-    backgroundColor: '#374151',
+  skeletonIcon: {
+    width: 24,
+    height: 24,
     borderRadius: 6,
+    backgroundColor: '#374151',
   },
   skeletonImage: {
     width: '100%',
-    height: 200,
+    height: 280,
+    backgroundColor: '#1a2332',
+  },
+  skeletonBadge: {
+    width: 80,
+    height: 28,
+    borderRadius: 20,
     backgroundColor: '#1f2937',
-    borderRadius: 12,
-    marginBottom: 20,
+    marginBottom: 16,
+  },
+  skeletonTitleLg: {
+    width: '80%',
+    height: 32,
+    backgroundColor: '#1f2937',
+    borderRadius: 8,
+    marginBottom: 16,
   },
   skeletonBlock: {
     width: '100%',
