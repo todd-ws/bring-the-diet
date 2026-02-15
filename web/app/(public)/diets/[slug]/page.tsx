@@ -21,6 +21,7 @@ interface Recipe {
   id: string;
   title: string;
   description?: string;
+  image?: string;
   diet?: string;
   dietSlug?: string;
   prepTime?: number;
@@ -568,22 +569,41 @@ export default function DietDetailPage() {
           </div>
         )}
 
-        {/* Recipes */}
+        {/* Related Recipes Carousel */}
         {recipes.length > 0 && (
           <div style={styles.section}>
-            <h3 style={styles.sectionTitle}>{displayName} Recipes</h3>
-            <div style={styles.recipeGrid}>
+            <div style={styles.recipesHeader}>
+              <h3 style={styles.sectionTitle}>Related Recipes</h3>
+              <Link href={`/recipes?diet=${slug}`} style={styles.seeAll}>
+                See All <span style={styles.seeAllChevron}>›</span>
+              </Link>
+            </div>
+            <div style={styles.carousel}>
               {recipes.map((recipe) => (
-                <Link key={recipe.id} href={`/recipes/${recipe.id}`} style={styles.recipeCard}>
-                  <h4 style={styles.recipeName}>{recipe.title}</h4>
-                  {recipe.description && (
-                    <p style={styles.recipeDesc}>
-                      {recipe.description.length > 80 ? recipe.description.slice(0, 80) + '...' : recipe.description}
-                    </p>
-                  )}
-                  <div style={styles.recipeMeta}>
-                    {recipe.prepTime && <span style={styles.recipeTag}>{recipe.prepTime} min</span>}
-                    {recipe.calories && <span style={styles.recipeTag}>{recipe.calories} cal</span>}
+                <Link key={recipe.id} href={`/recipes/${recipe.id}`} style={styles.carouselCard}>
+                  <div style={styles.carouselImageWrap}>
+                    {recipe.image ? (
+                      <img src={recipe.image} alt={recipe.title} style={styles.carouselImage} />
+                    ) : (
+                      <div style={styles.carouselImagePlaceholder}>
+                        <span style={{ fontSize: 40 }}>🍽️</span>
+                      </div>
+                    )}
+                  </div>
+                  <div style={styles.carouselCardBody}>
+                    <h4 style={styles.carouselRecipeName}>{recipe.title}</h4>
+                    <div style={styles.carouselMeta}>
+                      {recipe.prepTime && (
+                        <span style={styles.carouselMetaItem}>
+                          <span style={styles.metaIcon}>⏱</span> {recipe.prepTime} min
+                        </span>
+                      )}
+                      {recipe.calories && (
+                        <span style={styles.carouselMetaItem}>
+                          <span style={styles.metaIconFire}>🔥</span> {recipe.calories} cal
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </Link>
               ))}
@@ -721,42 +741,93 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 14,
     lineHeight: 1.3,
   },
-  recipeGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-    gap: 12,
+  recipesHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 0,
   },
-  recipeCard: {
-    display: 'block',
+  seeAll: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
+    color: '#9ca3af',
+    textDecoration: 'none',
+    fontSize: 14,
+    fontWeight: 500,
+  },
+  seeAllChevron: {
+    fontSize: 18,
+    lineHeight: 1,
+  },
+  carousel: {
+    display: 'flex',
+    gap: 14,
+    overflowX: 'auto',
+    scrollSnapType: 'x mandatory',
+    paddingBottom: 8,
+    WebkitOverflowScrolling: 'touch',
+    msOverflowStyle: 'none',
+    scrollbarWidth: 'none',
+  },
+  carouselCard: {
+    flex: '0 0 280px',
+    scrollSnapAlign: 'start',
     textDecoration: 'none',
     backgroundColor: '#1f2937',
-    borderRadius: 14,
+    borderRadius: 16,
     border: '1px solid #374151',
-    padding: 16,
+    overflow: 'hidden',
   },
-  recipeName: {
+  carouselImageWrap: {
+    width: '100%',
+    height: 180,
+    overflow: 'hidden',
+    backgroundColor: '#374151',
+  },
+  carouselImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+  carouselImagePlaceholder: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1f2937',
+  },
+  carouselCardBody: {
+    padding: 14,
+  },
+  carouselRecipeName: {
     margin: 0,
     fontSize: 16,
-    fontWeight: 600,
+    fontWeight: 700,
     color: 'white',
+    lineHeight: 1.3,
   },
-  recipeDesc: {
-    margin: '8px 0 0',
+  carouselMeta: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 16,
+    marginTop: 10,
+  },
+  carouselMetaItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
     fontSize: 13,
-    lineHeight: 1.5,
     color: '#9ca3af',
   },
-  recipeMeta: {
-    display: 'flex',
-    gap: 8,
-    marginTop: 12,
+  metaIcon: {
+    fontSize: 14,
+    opacity: 0.7,
   },
-  recipeTag: {
-    padding: '3px 10px',
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-    borderRadius: 8,
-    fontSize: 12,
-    color: '#d1d5db',
+  metaIconFire: {
+    fontSize: 14,
+    color: '#f97316',
   },
   mealPlanGrid: {
     display: 'flex',
