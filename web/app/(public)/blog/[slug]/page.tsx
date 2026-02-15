@@ -16,6 +16,7 @@ interface BlogPost {
   category: string;
   author: string;
   readTime: number;
+  tags?: string[];
   published: boolean;
   createdAt: string;
   updatedAt: string;
@@ -25,17 +26,32 @@ export default function BlogPostPage() {
   const params = useParams();
   const slug = params.slug as string;
   const [post, setPost] = useState<BlogPost | null>(null);
+  const [related, setRelated] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchPost() {
+    async function fetchData() {
       try {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 5000);
-        const res = await fetch(`${API_URL}/api/blogposts/slug/${slug}`, { signal: controller.signal });
+
+        const [postRes, allRes] = await Promise.allSettled([
+          fetch(`${API_URL}/api/blogposts/slug/${slug}`, { signal: controller.signal }),
+          fetch(`${API_URL}/api/blogposts?pageSize=10`, { signal: controller.signal }),
+        ]);
         clearTimeout(timeout);
-        if (!res.ok) throw new Error('Not found');
-        setPost(await res.json());
+
+        if (postRes.status === 'fulfilled' && postRes.value.ok) {
+          setPost(await postRes.value.json());
+        } else {
+          throw new Error('Not found');
+        }
+
+        if (allRes.status === 'fulfilled' && allRes.value.ok) {
+          const data = await allRes.value.json();
+          const items: BlogPost[] = Array.isArray(data) ? data : data.items || [];
+          setRelated(items.filter((p) => p.slug !== slug).slice(0, 3));
+        }
       } catch {
         const displayTitle = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         setPost({
@@ -46,6 +62,7 @@ export default function BlogPostPage() {
           category: 'Nutrition',
           author: 'BringTheDiet Team',
           readTime: 5,
+          tags: ['nutrition', 'wellness', 'healthy-eating', 'meal-prep'],
           published: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -63,11 +80,16 @@ export default function BlogPostPage() {
             'Remember that small, consistent changes are more sustainable than drastic overhauls. Start with one meal at a time and build from there.',
           ].join('\n'),
         });
+        setRelated([
+          { id: 'r1', title: '10 Superfoods for Better Health', slug: 'superfoods-health', category: 'Nutrition', author: '', readTime: 5, published: true, createdAt: '', updatedAt: '' },
+          { id: 'r2', title: 'Meal Prep Made Easy', slug: 'meal-prep-easy', category: 'Recipes', author: '', readTime: 6, published: true, createdAt: '', updatedAt: '' },
+          { id: 'r3', title: 'Understanding Food Labels', slug: 'food-labels', category: 'Tips', author: '', readTime: 4, published: true, createdAt: '', updatedAt: '' },
+        ]);
       } finally {
         setLoading(false);
       }
     }
-    fetchPost();
+    fetchData();
   }, [slug]);
 
   if (loading) {
@@ -216,13 +238,61 @@ export default function BlogPostPage() {
           )}
         </div>
 
+        {/* Tags */}
+        {post.tags && post.tags.length > 0 && (
+          <>
+            <div style={styles.divider} />
+            <div>
+              <h3 style={styles.tagsTitle}>Tags</h3>
+              <div style={styles.tagsWrap}>
+                {post.tags.map((tag) => (
+                  <span key={tag} style={styles.tag}>#{tag}</span>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Related Articles */}
+        {related.length > 0 && (
+          <>
+            <div style={styles.dividerLarge} />
+            <h3 style={styles.relatedTitle}>Related Articles</h3>
+            <div style={styles.relatedList}>
+              {related.map((article) => (
+                <Link key={article.id} href={`/blog/${article.slug}`} style={styles.relatedCard}>
+                  <div style={styles.relatedThumb}>
+                    {article.image ? (
+                      <img src={article.image} alt={article.title} style={styles.relatedThumbImg} />
+                    ) : (
+                      <div style={styles.relatedThumbPlaceholder}>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4b5563" strokeWidth="1.5">
+                          <rect x="3" y="3" width="18" height="18" rx="2" />
+                          <circle cx="8.5" cy="8.5" r="1.5" />
+                          <path d="M21 15l-5-5L5 21" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                  <div style={styles.relatedInfo}>
+                    <span style={styles.relatedBadge}>{article.category}</span>
+                    <h4 style={styles.relatedName}>{article.title}</h4>
+                    <span style={styles.relatedMeta}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      {article.readTime} min read
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
+
         {/* Footer */}
         <div style={styles.divider} />
-        <div style={styles.footer}>
-          <Link href="/blog" style={styles.backLink}>
-            ← Back to all articles
-          </Link>
-        </div>
       </div>
     </div>
   );
@@ -367,6 +437,102 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 16,
     lineHeight: 1.8,
     color: '#d1d5db',
+  },
+  tagsTitle: {
+    margin: '0 0 12px',
+    fontSize: 16,
+    fontWeight: 700,
+    color: 'white',
+  },
+  tagsWrap: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  tag: {
+    display: 'inline-block',
+    padding: '6px 14px',
+    backgroundColor: '#374151',
+    color: '#d1d5db',
+    borderRadius: 20,
+    fontSize: 13,
+    fontWeight: 500,
+  },
+  dividerLarge: {
+    height: 1,
+    backgroundColor: '#374151',
+    margin: '36px 0 28px',
+  },
+  relatedTitle: {
+    margin: '0 0 20px',
+    fontSize: 22,
+    fontWeight: 700,
+    color: 'white',
+  },
+  relatedList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 14,
+  },
+  relatedCard: {
+    display: 'flex',
+    gap: 14,
+    textDecoration: 'none',
+    backgroundColor: '#1f2937',
+    borderRadius: 14,
+    border: '1px solid #374151',
+    overflow: 'hidden',
+  },
+  relatedThumb: {
+    width: 120,
+    minHeight: 110,
+    flexShrink: 0,
+    overflow: 'hidden',
+  },
+  relatedThumbImg: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+  relatedThumbPlaceholder: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1a2332',
+  },
+  relatedInfo: {
+    flex: 1,
+    padding: '14px 14px 14px 0',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    gap: 6,
+  },
+  relatedBadge: {
+    display: 'inline-block',
+    padding: '3px 10px',
+    backgroundColor: '#374151',
+    color: '#d1d5db',
+    borderRadius: 6,
+    fontSize: 11,
+    fontWeight: 500,
+    alignSelf: 'flex-start',
+  },
+  relatedName: {
+    margin: 0,
+    fontSize: 15,
+    fontWeight: 700,
+    color: 'white',
+    lineHeight: 1.3,
+  },
+  relatedMeta: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 5,
+    fontSize: 12,
+    color: '#6b7280',
   },
   footer: {
     display: 'flex',
