@@ -27,12 +27,20 @@ interface Recipe {
   calories?: number;
 }
 
+interface MealPlan {
+  breakfast: string[];
+  lunch: string[];
+  dinner: string[];
+  snacks: string[];
+}
+
 interface DietGuide {
   displayName: string;
   overview: string;
   benefits: string[];
   foodsToEat: string[];
   foodsToAvoid: string[];
+  sampleMealPlan: MealPlan;
 }
 
 const DIET_GUIDES: Record<string, DietGuide> = {
@@ -63,6 +71,12 @@ const DIET_GUIDES: Record<string, DietGuide> = {
       'Root vegetables',
       'Low-fat or diet products',
     ],
+    sampleMealPlan: {
+      breakfast: ['Scrambled eggs with avocado', 'Bulletproof coffee', 'Bacon strips'],
+      lunch: ['Grilled salmon over spinach salad', 'Olive oil & lemon dressing', 'Macadamia nuts'],
+      dinner: ['Ribeye steak with garlic butter', 'Roasted broccoli with parmesan', 'Side salad with ranch'],
+      snacks: ['Cheese crisps', 'Pork rinds', 'Celery with almond butter'],
+    },
   },
   paleo: {
     displayName: 'Paleo Diet',
@@ -90,6 +104,12 @@ const DIET_GUIDES: Record<string, DietGuide> = {
       'Processed foods and vegetable oils',
       'Artificial sweeteners',
     ],
+    sampleMealPlan: {
+      breakfast: ['Sweet potato hash with eggs', 'Fresh berries', 'Black coffee'],
+      lunch: ['Grilled chicken salad with avocado', 'Mixed greens and walnuts', 'Balsamic vinaigrette'],
+      dinner: ['Wild-caught salmon with roasted vegetables', 'Cauliflower mash', 'Steamed asparagus'],
+      snacks: ['Apple slices with almond butter', 'Beef jerky', 'Mixed nuts'],
+    },
   },
   vegan: {
     displayName: 'Vegan Diet',
@@ -118,6 +138,12 @@ const DIET_GUIDES: Record<string, DietGuide> = {
       'Honey',
       'Gelatin and animal-derived additives',
     ],
+    sampleMealPlan: {
+      breakfast: ['Overnight oats with chia and berries', 'Smoothie with spinach and banana', 'Whole grain toast with avocado'],
+      lunch: ['Lentil soup with crusty bread', 'Quinoa buddha bowl', 'Roasted chickpea salad'],
+      dinner: ['Tofu stir-fry with vegetables', 'Brown rice and edamame', 'Coconut curry with chickpeas'],
+      snacks: ['Hummus with veggie sticks', 'Trail mix', 'Dark chocolate squares'],
+    },
   },
   vegetarian: {
     displayName: 'Vegetarian Diet',
@@ -143,6 +169,12 @@ const DIET_GUIDES: Record<string, DietGuide> = {
       'Animal-derived broths',
       'Gelatin-based products',
     ],
+    sampleMealPlan: {
+      breakfast: ['Greek yogurt with granola and honey', 'Veggie omelette with cheese', 'Fresh fruit bowl'],
+      lunch: ['Caprese sandwich with mozzarella', 'Black bean and corn salad', 'Vegetable soup with crusty bread'],
+      dinner: ['Eggplant parmesan', 'Pasta primavera with cream sauce', 'Stuffed bell peppers with rice and beans'],
+      snacks: ['Cheese and crackers', 'Apple with peanut butter', 'Yogurt parfait'],
+    },
   },
   mediterranean: {
     displayName: 'Mediterranean Diet',
@@ -170,6 +202,12 @@ const DIET_GUIDES: Record<string, DietGuide> = {
       'Heavily processed foods',
       'Sugary beverages',
     ],
+    sampleMealPlan: {
+      breakfast: ['Whole grain toast with olive oil and tomatoes', 'Greek yogurt with figs and honey', 'Herbal tea'],
+      lunch: ['Grilled fish with lemon and capers', 'Tabbouleh salad', 'Hummus with whole wheat pita'],
+      dinner: ['Baked salmon with herbs', 'Roasted vegetables with olive oil', 'Mixed green salad with feta'],
+      snacks: ['Olives and almonds', 'Fresh fruit', 'Whole grain crackers with tzatziki'],
+    },
   },
   'low-carb': {
     displayName: 'Low Carb Diet',
@@ -196,6 +234,12 @@ const DIET_GUIDES: Record<string, DietGuide> = {
       'Most fruits',
       'Beer and sugary cocktails',
     ],
+    sampleMealPlan: {
+      breakfast: ['Bacon and cheese omelette', 'Sausage links', 'Coffee with heavy cream'],
+      lunch: ['Lettuce wrap burgers', 'Coleslaw with mayo dressing', 'Dill pickle spears'],
+      dinner: ['Grilled chicken thighs', 'Roasted Brussels sprouts with bacon', 'Cauliflower rice'],
+      snacks: ['String cheese', 'Hard-boiled eggs', 'Cucumber with cream cheese'],
+    },
   },
   'gluten-free': {
     displayName: 'Gluten Free Diet',
@@ -223,6 +267,12 @@ const DIET_GUIDES: Record<string, DietGuide> = {
       'Beer and malt beverages',
       'Some processed meats',
     ],
+    sampleMealPlan: {
+      breakfast: ['Gluten-free oatmeal with berries', 'Scrambled eggs with vegetables', 'Orange juice'],
+      lunch: ['Rice noodle stir-fry with chicken', 'Corn tortilla tacos', 'Mixed green salad'],
+      dinner: ['Grilled steak with baked potato', 'Roasted root vegetables', 'Quinoa pilaf'],
+      snacks: ['Rice cakes with peanut butter', 'Fresh fruit', 'Yogurt with honey'],
+    },
   },
   dash: {
     displayName: 'DASH Diet',
@@ -249,6 +299,12 @@ const DIET_GUIDES: Record<string, DietGuide> = {
       'Full-fat dairy',
       'Alcohol in excess',
     ],
+    sampleMealPlan: {
+      breakfast: ['Oatmeal with banana and walnuts', 'Low-fat yogurt', 'Whole wheat toast with jam'],
+      lunch: ['Turkey and avocado wrap', 'Side of mixed vegetables', 'Fresh fruit salad'],
+      dinner: ['Baked chicken breast with herbs', 'Steamed broccoli and carrots', 'Brown rice'],
+      snacks: ['Unsalted almonds', 'Baby carrots with hummus', 'Apple slices'],
+    },
   },
   'high-protein': {
     displayName: 'High Protein Diet',
@@ -276,6 +332,12 @@ const DIET_GUIDES: Record<string, DietGuide> = {
       'Excessive alcohol',
       'Processed meats high in sodium',
     ],
+    sampleMealPlan: {
+      breakfast: ['Protein pancakes with berries', 'Egg white omelette with turkey', 'Greek yogurt shake'],
+      lunch: ['Grilled chicken breast salad', 'Tuna wrap with whole wheat tortilla', 'Cottage cheese with fruit'],
+      dinner: ['Salmon fillet with quinoa', 'Lean ground turkey stir-fry', 'Grilled shrimp with sweet potato'],
+      snacks: ['Protein shake', 'Hard-boiled eggs', 'Beef jerky with almonds'],
+    },
   },
   diabetic: {
     displayName: 'Diabetic Diet',
@@ -304,6 +366,12 @@ const DIET_GUIDES: Record<string, DietGuide> = {
       'High-sugar cereals',
       'Dried fruit in large amounts',
     ],
+    sampleMealPlan: {
+      breakfast: ['Veggie omelette with whole grain toast', 'Steel-cut oatmeal with cinnamon', 'Berries and nuts'],
+      lunch: ['Grilled chicken with roasted vegetables', 'Lentil and spinach soup', 'Turkey lettuce wraps'],
+      dinner: ['Baked cod with green beans', 'Chicken stir-fry with brown rice', 'Lean pork tenderloin with sweet potato'],
+      snacks: ['Almonds and walnuts', 'Celery with peanut butter', 'Low-sugar protein bar'],
+    },
   },
   'low-fodmap': {
     displayName: 'Low FODMAP Diet',
@@ -332,6 +400,12 @@ const DIET_GUIDES: Record<string, DietGuide> = {
       'Honey and high-fructose corn syrup',
       'Cauliflower and mushrooms',
     ],
+    sampleMealPlan: {
+      breakfast: ['Gluten-free oatmeal with blueberries', 'Scrambled eggs with chives', 'Lactose-free yogurt'],
+      lunch: ['Grilled chicken with rice and carrots', 'Firm tofu salad with bell peppers', 'Rice paper rolls'],
+      dinner: ['Baked salmon with zucchini and potatoes', 'Chicken stir-fry with bok choy', 'Spaghetti with low-FODMAP marinara'],
+      snacks: ['Rice cakes with peanut butter', 'Strawberries', 'Small handful of walnuts'],
+    },
   },
 };
 
@@ -468,6 +542,27 @@ export default function DietDetailPage() {
             <div style={styles.tagWrap}>
               {guide.foodsToAvoid.map((f) => (
                 <span key={f} style={styles.foodTagRed}>{f}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Sample Meal Plan */}
+        {guide && (
+          <div style={styles.section}>
+            <h3 style={styles.sectionTitle}>Sample Meal Plan</h3>
+            <div style={styles.mealPlanGrid}>
+              {(['breakfast', 'lunch', 'dinner', 'snacks'] as const).map((meal) => (
+                <div key={meal} style={styles.mealCard}>
+                  <h4 style={styles.mealCardTitle}>
+                    {meal.charAt(0).toUpperCase() + meal.slice(1)}
+                  </h4>
+                  <ul style={styles.mealList}>
+                    {guide.sampleMealPlan[meal].map((item) => (
+                      <li key={item} style={styles.mealItem}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
               ))}
             </div>
           </div>
@@ -661,6 +756,36 @@ const styles: { [key: string]: React.CSSProperties } = {
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
     borderRadius: 8,
     fontSize: 12,
+    color: '#d1d5db',
+  },
+  mealPlanGrid: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+  },
+  mealCard: {
+    backgroundColor: '#1f2937',
+    borderRadius: 14,
+    border: '1px solid #374151',
+    padding: 16,
+  },
+  mealCardTitle: {
+    margin: '0 0 10px',
+    fontSize: 17,
+    fontWeight: 700,
+    color: 'white',
+  },
+  mealList: {
+    listStyle: 'disc',
+    margin: 0,
+    paddingLeft: 20,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 6,
+  },
+  mealItem: {
+    fontSize: 14,
+    lineHeight: 1.5,
     color: '#d1d5db',
   },
   linkGreen: {
