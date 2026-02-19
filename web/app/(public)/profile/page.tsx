@@ -28,7 +28,7 @@ export default function ProfilePage() {
       <h2 style={styles.sectionHeading}>Sign in with</h2>
 
       <button type="button" style={styles.socialBtn}>
-        <div style={{ ...styles.socialIconCircle, backgroundColor: '#1f2937' }}>
+        <div style={{ ...styles.socialIconCircle, backgroundColor: 'var(--card-bg)' }}>
           <span style={{ color: '#ea4335', fontSize: 22, fontWeight: 700 }}>G</span>
         </div>
         <span style={styles.socialLabel}>Continue with Google</span>
@@ -82,13 +82,13 @@ export default function ProfilePage() {
 const styles: { [key: string]: React.CSSProperties } = {
   page: {
     minHeight: 'calc(100vh - 120px)',
-    backgroundColor: '#111827',
+    backgroundColor: 'var(--page-bg)',
     padding: '0 16px 100px',
   },
   welcomeCard: {
-    backgroundColor: '#1f2937',
+    backgroundColor: 'var(--card-bg)',
     borderRadius: 16,
-    border: '1px solid #374151',
+    border: '1px solid var(--card-border)',
     padding: '36px 24px 32px',
     textAlign: 'center',
     marginBottom: 28,
@@ -97,7 +97,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: 96,
     height: 96,
     borderRadius: '50%',
-    backgroundColor: '#374151',
+    backgroundColor: 'var(--card-border)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -107,19 +107,19 @@ const styles: { [key: string]: React.CSSProperties } = {
     margin: '0 0 10px',
     fontSize: 28,
     fontWeight: 700,
-    color: 'white',
+    color: 'var(--text-primary)',
   },
   welcomeText: {
     margin: 0,
     fontSize: 15,
     lineHeight: 1.6,
-    color: '#9ca3af',
+    color: 'var(--text-muted)',
   },
   sectionHeading: {
     margin: '0 0 16px',
     fontSize: 20,
     fontWeight: 700,
-    color: 'white',
+    color: 'var(--text-primary)',
   },
   socialBtn: {
     display: 'flex',
@@ -127,10 +127,10 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: 14,
     width: '100%',
     padding: '16px 20px',
-    backgroundColor: '#1f2937',
+    backgroundColor: 'var(--card-bg)',
     borderRadius: 16,
-    border: '1px solid #374151',
-    color: 'white',
+    border: '1px solid var(--card-border)',
+    color: 'var(--text-primary)',
     fontSize: 16,
     fontWeight: 500,
     cursor: 'pointer',
@@ -153,9 +153,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     flexShrink: 0,
   },
   benefitsCard: {
-    backgroundColor: '#1f2937',
+    backgroundColor: 'var(--card-bg)',
     borderRadius: 16,
-    border: '1px solid #374151',
+    border: '1px solid var(--card-border)',
     padding: '24px 20px',
     marginTop: 20,
   },
@@ -163,7 +163,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     margin: '0 0 16px',
     fontSize: 18,
     fontWeight: 700,
-    color: 'white',
+    color: 'var(--text-primary)',
   },
   benefitsList: {
     display: 'flex',
@@ -187,6 +187,6 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   benefitText: {
     fontSize: 15,
-    color: '#d1d5db',
+    color: 'var(--text-secondary)',
   },
 };

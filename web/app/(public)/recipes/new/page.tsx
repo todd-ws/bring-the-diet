@@ -535,8 +535,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   submitBtn: {
     width: '100%',
     padding: '16px',
-    backgroundColor: '#d1d5db',
-    color: '#111827',
+    backgroundColor: 'var(--btn-primary-bg)',
+    color: 'var(--btn-primary-text)',
     border: 'none',
     borderRadius: 14,
     fontSize: 16,
@@ -547,9 +547,9 @@ const styles: { [key: string]: React.CSSProperties } = {
   cancelBtn: {
     width: '100%',
     padding: '16px',
-    backgroundColor: '#1f2937',
-    color: 'white',
-    border: '1px solid #374151',
+    backgroundColor: 'var(--btn-secondary-bg)',
+    color: 'var(--btn-secondary-text)',
+    border: '1px solid var(--card-border)',
     borderRadius: 14,
     fontSize: 16,
     fontWeight: 700,
